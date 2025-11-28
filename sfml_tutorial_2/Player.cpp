@@ -3,6 +3,7 @@
 
 void Player::initVariables()
 {
+	this->movementSpeed = 5.f;
 }
 
 void Player::initShape()
@@ -12,8 +13,36 @@ void Player::initShape()
 
 }
 
-void Player::update()
+void Player::updateInput()
 {
+	//Keyboard input
+	//Left
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		this->shape.move(-this->movementSpeed, 0.f);
+	}
+	//Right
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		this->shape.move(this->movementSpeed, 0.f);
+	}
+
+	//Up
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+		this->shape.move(0.f, -this->movementSpeed);
+	}
+	//Down
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+		this->shape.move(0.f, this->movementSpeed);
+	}
+}
+
+void Player::update(sf::RenderTarget& target)
+{
+	//Window bounds check
+	
+
+	this->updateInput();
 }
 
 void Player::render(sf::RenderTarget& target)
@@ -21,8 +50,10 @@ void Player::render(sf::RenderTarget& target)
 	target.draw(this->shape);
 }
 
-Player::Player()
+Player::Player(float x, float y)
 {
+	this->shape.setPosition(x, y);
+
 	this->initShape();
 	this->initVariables();
 }
