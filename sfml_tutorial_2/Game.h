@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "Player.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -38,6 +39,8 @@ private:
 
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
+
+	Player player;
 
 	void initWindow();
 	void initVariables();

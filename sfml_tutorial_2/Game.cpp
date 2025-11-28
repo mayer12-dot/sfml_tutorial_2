@@ -47,7 +47,7 @@ void Game::render()
 	this->window->draw(this->backgroundSprite);
 
 	//Draw here
-
+	this->player.render(*this->window);
 
 	this->window->display();
 }
