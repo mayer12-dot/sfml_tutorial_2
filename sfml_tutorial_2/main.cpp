@@ -8,6 +8,8 @@ int main() {
 	//Initialize game object
 	Game game;
 
+	game.setBackgroundTexture("x64/Debug/Resources/wood_texture.jpg");
+
 	//Game loop
 	while (game.running()) {
 		

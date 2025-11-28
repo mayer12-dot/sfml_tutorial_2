@@ -28,11 +28,16 @@ public:
 
 	void render();
 
+	void setBackgroundTexture(const std::string & filename);
+
 private:
 	sf::VideoMode videoMode;
 	sf::RenderWindow* window;
 	bool endGame;
 	sf::Event sfmlEvent;
+
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
 
 	void initWindow();
 	void initVariables();

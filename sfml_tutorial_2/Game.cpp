@@ -44,11 +44,30 @@ void Game::render()
 {
 	this->window->clear();
 	
+	this->window->draw(this->backgroundSprite);
 
 	//Draw here
 
 
 	this->window->display();
+}
+
+void Game::setBackgroundTexture(const std::string& filename)
+{
+	if (!this->backgroundTexture.loadFromFile(filename)) {
+		std::cerr << "ERROR::GAME::COULD NOT LOAD BACKGROUND TEXTURE FROM FILE: " << filename << "\n";
+		return;
+	}
+
+	backgroundSprite.setTexture(this->backgroundTexture);
+
+	sf::Vector2u textureSize = this->backgroundTexture.getSize();
+	sf::Vector2u windowSize = this->window->getSize();
+
+	backgroundSprite.setScale(
+		static_cast<float>(windowSize.x) / static_cast<float>(textureSize.x),
+		static_cast<float>(windowSize.y) / static_cast<float>(textureSize.y)
+	);
 }
 
 void Game::initWindow()
