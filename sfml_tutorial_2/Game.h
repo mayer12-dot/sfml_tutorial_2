@@ -50,6 +50,7 @@ private:
 	std::vector<SwagBall> swagBalls;
 
 	void spawnSwagBalls();
+	void updateCollision();
 	void initWindow();
 	void initVariables();
 };
