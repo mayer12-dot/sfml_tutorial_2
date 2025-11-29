@@ -1,8 +1,23 @@
 #pragma once
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+
 class SwagBall
 {
+private:
+	sf::CircleShape shape;
+
+	void initShape(const sf::RenderWindow& window);
 public:
-	SwagBall();
+	SwagBall(const sf::RenderWindow& window);
 	virtual ~SwagBall();
+
+	void update();
+
+	void render(sf::RenderTarget& target);
 };
 

@@ -39,6 +39,7 @@ void Game::update()
 {
 	this->pollEvents();
 
+	this->spawnSwagBalls();
 	this->player.update(*this->window);
 }
 
@@ -50,6 +51,11 @@ void Game::render()
 
 	//Draw here
 	this->player.render(*this->window);
+
+	for (auto& swagBall : this->swagBalls)
+	{
+		swagBall.render(*this->window);
+	}
 
 	this->window->display();
 }
@@ -72,6 +78,22 @@ void Game::setBackgroundTexture(const std::string& filename)
 	);
 }
 
+void Game::spawnSwagBalls()
+{
+	//Timer
+	if (this->spawnTimer < this->spawnTimerMax)
+		this->spawnTimer += 1.f;
+	else
+	{
+		//Spawn the swag ball and reset the timer
+		if (this->swagBalls.size() < this->maxSwagBalls)
+		{
+			this->swagBalls.push_back(SwagBall(*this->window));
+			this->spawnTimer = 0.f;
+		}
+	}
+}
+
 void Game::initWindow()
 {
 	this->videoMode = sf::VideoMode(800, 600);
@@ -82,6 +104,9 @@ void Game::initWindow()
 void Game::initVariables()
 {
 	this->endGame = false;
+	this->spawnTimerMax = 10.f;
+	this->spawnTimer = this->spawnTimerMax;
+	this->maxSwagBalls = 50;
 }
 
 //Functions

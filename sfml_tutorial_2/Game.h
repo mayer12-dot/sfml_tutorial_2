@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Player.h"
+#include "SwagBall.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -37,11 +38,18 @@ private:
 	bool endGame;
 	sf::Event sfmlEvent;
 
+	float spawnTimer;
+	float spawnTimerMax;
+	int maxSwagBalls;
+
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 
 	Player player;
 
+	std::vector<SwagBall> swagBalls;
+
+	void spawnSwagBalls();
 	void initWindow();
 	void initVariables();
 };
