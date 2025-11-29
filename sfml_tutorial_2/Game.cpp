@@ -5,6 +5,8 @@ Game::Game()
 {
 	this->initVariables();
 	this->initWindow();
+	this->initFonts();
+	this->initText();
 }
 
 Game::~Game()
@@ -42,6 +44,7 @@ void Game::update()
 	this->spawnSwagBalls();
 	this->player.update(*this->window);
 	this->updateCollision();
+	this->updateGuiText();
 }
 
 void Game::render()
@@ -57,6 +60,9 @@ void Game::render()
 	{
 		swagBall.render(*this->window);
 	}
+
+	//Render GUI
+	this->renderGui(*this->window);
 
 	this->window->display();
 }
@@ -102,8 +108,22 @@ void Game::updateCollision()
 	{
 		if (this->player.getShape().getGlobalBounds().intersects(this->swagBalls[i].getShape().getGlobalBounds())) {
 			this->swagBalls.erase(this->swagBalls.begin() + i);
+			this->points++;
 		}
 	}
+}
+
+void Game::updateGuiText()
+{
+	std::stringstream ss;
+
+	ss << "Points: " << this->points;
+
+	this->guiText.setString(ss.str());
+	this->guiTextRect = this->guiText.getLocalBounds();
+	this->textBackground.setSize(sf::Vector2f(guiTextRect.width + 10, guiTextRect.height + 10));
+	this->textBackground.setPosition(this->guiText.getPosition().x + guiTextRect.left - 5,
+		this->guiText.getPosition().y + guiTextRect.top - 5);
 }
 
 void Game::initWindow()
@@ -119,6 +139,37 @@ void Game::initVariables()
 	this->spawnTimerMax = 10.f;
 	this->spawnTimer = this->spawnTimerMax;
 	this->maxSwagBalls = 10;
+	this->points = 0;
+}
+
+void Game::initFonts()
+{
+	if (!this->font.loadFromFile("Fonts/Cookies Gingerbread.otf"))
+	{
+		std::cerr << " ! ERROR::GAME::INITFONTS COULD NOT LOAD FONT FILE\n";
+	}
+}
+
+void Game::initText()
+{
+	//gui text init
+	this->guiText.setFont(this->font);
+	this->guiText.setCharacterSize(32);
+	this->guiText.setFillColor(sf::Color(100, 0, 0));
+	this->guiText.setString("NONE");
+
+	this->guiTextRect = this->guiText.getLocalBounds();
+
+	this->textBackground.setSize(sf::Vector2f(guiTextRect.width + 10, guiTextRect.height + 10));
+	textBackground.setFillColor(sf::Color::White);
+	textBackground.setPosition(this->guiText.getPosition().x + guiTextRect.left - 5,
+		this->guiText.getPosition().y + guiTextRect.top - 5);
+}
+
+void Game::renderGui(sf::RenderTarget& target)
+{
+	target.draw(this->textBackground);
+	target.draw(this->guiText);
 }
 
 //Functions

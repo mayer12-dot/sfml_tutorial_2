@@ -15,7 +15,6 @@ private:
 
 	int hp;
 	int hpMax;
-	int points;
 
 	void initVariables();
 	void initShape();

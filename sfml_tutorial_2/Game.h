@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
 #include "Player.h"
 #include "SwagBall.h"
 
@@ -47,11 +48,22 @@ private:
 
 	Player player;
 
+	int points;
+
+	sf::Font font;
+	sf::Text guiText;
+	sf::FloatRect guiTextRect;
+	sf::RectangleShape textBackground;
+
 	std::vector<SwagBall> swagBalls;
 
 	void spawnSwagBalls();
 	void updateCollision();
+	void updateGuiText();
 	void initWindow();
 	void initVariables();
+	void initFonts();
+	void initText();
+	void renderGui(sf::RenderTarget& target);
 };
 
