@@ -37,12 +37,41 @@ void Player::updateInput()
 	}
 }
 
+void Player::updateWindowBoundsCollision(const sf::RenderTarget& target)
+{
+	sf::FloatRect pos = this->shape.getGlobalBounds();
+	sf::Vector2f size = this->shape.getSize();
+	sf::Vector2u windowSize = target.getSize();
+
+	//this is added to prevent the player from going outside the window bounds if 
+	//top and left are both pressed
+	float newX = pos.left;
+	float newY = pos.top;
+
+	if (pos.left <= 0.f)
+	{
+		newX = 0.f;
+	}
+	else if (pos.left + size.x >= windowSize.x) {
+		newX = windowSize.x - size.x;
+	}
+
+	if (pos.top <= 0.f) {
+		newY = 0.f;
+	}
+	else if (pos.top + size.y >= windowSize.y) {
+		newY = windowSize.y - size.y;
+	}
+
+	this->shape.setPosition(newX, newY);
+}
+
 void Player::update(sf::RenderTarget& target)
 {
-	//Window bounds check
-	
-
 	this->updateInput();
+
+	//Window bounds check
+	this->updateWindowBoundsCollision(target);
 }
 
 void Player::render(sf::RenderTarget& target)
