@@ -11,6 +11,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+
 class Game
 {
 public:
@@ -59,11 +60,13 @@ private:
 
 	void spawnSwagBalls();
 	void updateCollision();
+
 	void updateGuiText();
+	void renderGui(sf::RenderTarget& target);
+
 	void initWindow();
 	void initVariables();
 	void initFonts();
 	void initText();
-	void renderGui(sf::RenderTarget& target);
 };
 
