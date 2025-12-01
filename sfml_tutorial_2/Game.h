@@ -21,6 +21,7 @@ public:
 	~Game();
 
 	//Accessors
+	const bool getEndGame() const;
 
 	//Modifiers
 
@@ -43,6 +44,8 @@ private:
 	float spawnTimer;
 	float spawnTimerMax;
 	int maxSwagBalls;
+	int damageBallscnt;
+	int healingBallsCnt;
 
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
@@ -60,6 +63,7 @@ private:
 
 	void spawnSwagBalls();
 	void updateCollision();
+	int randBallType();
 
 	void updateGuiText();
 	void renderGui(sf::RenderTarget& target);

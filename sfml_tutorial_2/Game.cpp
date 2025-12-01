@@ -14,6 +14,11 @@ Game::~Game()
 	delete this->window;
 }
 
+const bool Game::getEndGame() const
+{
+	return false;
+}
+
 const bool Game::running() const
 {
 	return this->window->isOpen();
@@ -41,10 +46,13 @@ void Game::update()
 {
 	this->pollEvents();
 
-	this->spawnSwagBalls();
-	this->player.update(*this->window);
-	this->updateCollision();
-	this->updateGuiText();
+	if (!this->endGame)
+	{
+		this->spawnSwagBalls();
+		this->player.update(*this->window);
+		this->updateCollision();
+		this->updateGuiText();
+	}
 }
 
 void Game::render()
@@ -95,7 +103,7 @@ void Game::spawnSwagBalls()
 		//Spawn the swag ball and reset the timer
 		if (this->swagBalls.size() < this->maxSwagBalls)
 		{
-			this->swagBalls.push_back(SwagBall(*this->window, rand() % SwagBallTypes::NROFTYPES));
+			this->swagBalls.push_back(SwagBall(*this->window, this->randBallType()));
 			this->spawnTimer = 0.f;
 		}
 	}
@@ -115,9 +123,13 @@ void Game::updateCollision()
 					this->points++;
 					break;
 				case SwagBallTypes::DAMAGING:
+					this->damageBallscnt--;
 					this->player.takeDamage(1);
+					if (this->player.getHp() == 0)
+						this->endGame = true;
 					break;
 				case SwagBallTypes::HEALING:
+					this->healingBallsCnt--;
 					this->player.heal(1);
 					break;
 				default:
@@ -128,6 +140,28 @@ void Game::updateCollision()
 			this->swagBalls.erase(this->swagBalls.begin() + i);
 		}
 	}
+}
+
+int Game::randBallType()
+{
+	int type = SwagBallTypes::DEFAULT;
+	int randVal = rand() % 100 + 1; //1 - 100
+	
+	if (randVal > 60 && randVal <= 95) {
+		if (this->damageBallscnt < 3) // 3 is max damaging balls allowed
+		{
+			this->damageBallscnt++;
+			type = SwagBallTypes::DAMAGING;
+		}
+	}
+	else if (randVal > 95) {
+		if (this->healingBallsCnt < 3) // 3 is max healing balls allowed
+		{
+			this->healingBallsCnt++;
+			type = SwagBallTypes::HEALING;
+		}
+	}
+	return type;
 }
 
 void Game::updateGuiText()
@@ -157,6 +191,9 @@ void Game::initVariables()
 	this->spawnTimer = this->spawnTimerMax;
 	this->maxSwagBalls = 10;
 	this->points = 0;
+	this->damageBallscnt = 0;
+	this->healingBallsCnt = 0;
+	this->endGame = false;
 }
 
 void Game::initFonts()
